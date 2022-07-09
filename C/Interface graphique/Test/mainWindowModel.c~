@@ -1,0 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <gtk/gtk.h>
+#include "mainWindowModel.h"
+#include "struct.h"
+
+void intMainWindowTitle(gchar *main_menu_title)
+{
+	main_menu_title=g_strdup("VNCreator");
+}

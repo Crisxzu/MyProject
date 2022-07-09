@@ -1,0 +1,8 @@
+choice= 2
+choice(a)= C'est pas moi !$ (if 1 Le détruire !$ (goto) 0001a05b02 ) (goto) 0001b01
+choice(b)= C'est moi oui !$ (goto) 0001a05b01
+background= celluloid-shot0235.jpg
+profilepicture= profilepicture_0001a04.pp
+charactername= Sakuya
+dialogue= Oh mais d'où vient cette explosion ? C'est toi qui a fait ça Cirno ?
+

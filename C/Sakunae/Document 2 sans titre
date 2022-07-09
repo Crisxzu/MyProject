@@ -1,0 +1,24 @@
+algo
+début d'algo
+déclarer deux variables qui vont nous permettre d'avoir lang2lang1( Base b, List list2)
+allouer de la mémoire à ces deux variables
+maketabmotsnorepeatlang2lang1(b, list1); list1 liste des trad de chaque mot lang1lang2
+makelistforeachwordslang2lang1(list2, a); a structure lang1lang2
+quiz(b, list2); 20 mots au hasard
+desallouer la mémoire alloué à ces deux variables
+fin d'algo
+
+correction
+nbMotJap = 0;
+for each list1[i]
+     for each  list1[i].trad[j]
+           if( list1[i].trad[j] not exist in result)
+                result[nbMotJap].mot =  list1[i].trad[j]
+                add list1[i].mot into result[nbMotJap].trad
+                nbMotJap++;
+          else
+               //calcul index pour lequel result[index] == list1[i].trad[j
+                index = getIndex( list1[i].trad[j], result) 
+               add list1[i].mot into result[index].trad
+      end for
+end for

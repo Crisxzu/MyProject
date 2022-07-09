@@ -1,0 +1,9 @@
+choice= 2
+choice(a)= Le détruire !$ (goto) 0001a05
+choice(b)= Ne rien faire$ (goto) 0001a05
+background= celluloid-shot0235.jpg
+profilepicture= 1e32076402b1e454102e358704e7e8d3.jpg
+charactername= Cirno
+dialogue= Oh, c'est quoi ça ? On dirait que c'est dangereux.
+
+Format par défaut, veuillez modifier en fonction de vos besoins. Concernant la proposition des choix, veuillez préciser au moins deux choix le texte à afficher ainsi que le nom du prochain fichier(ce texte est à effacer)

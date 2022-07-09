@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "menu.h"
+
+void displayMenu()
+{
+  printf("== Menu de VNCreator ==\n1.PlayVn\n2.Settings\n3.Quit\n=============\n"); 
+}
+
+void waitchoice(char *buffer, int *choice)
+{
+  fgets(buffer, sizeof(char)*5, stdin);
+  sscanf(buffer, "%d", &*choice);
+}
+
+void displaySettings()
+{
+  printf(" Je joue au VN.\n");
+}
+
+void modifySettings()
+{
+  printf(" Je joue au VN.\n");
+}

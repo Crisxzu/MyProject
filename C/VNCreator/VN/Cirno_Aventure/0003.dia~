@@ -1,0 +1,7 @@
+choice= 0 (goto) 0004
+background= background_0004.bac
+profilepicture= profilepicture_0004.pp
+charactername= Random
+dialogue= Ya rien ><
+
+ /*Format par défaut, veuillez modifier en fonction de vos besoins. Concernant la proposition des choix, veuillez préciser au moins deux choix le texte à afficher ainsi que le nom du prochain fichier*/

@@ -1,0 +1,16 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <curses.h>
+#include "menuControler.h"
+#include "playVNControler.h"
+#include "struct.h"
+
+int main ()
+{
+	Settings s;
+	
+	initializeSettings(&s);
+	launchmenu(&s);
+	playVN(&s);
+	return 0;
+}

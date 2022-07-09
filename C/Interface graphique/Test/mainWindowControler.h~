@@ -1,0 +1,9 @@
+#ifndef DEF_MAINWINDOWCONTROLER
+#define DEF_MAINWINDOWCONTROLER
+
+void mainWindow();
+
+void initializeStructGlobal();
+
+#endif
+

@@ -1,0 +1,9 @@
+choice= 2
+choice(a)= J'avance$ (goto) 0001a03a01
+choice(b)= Je recule$ (goto) 0001a04
+background= background_0001a03.bac
+profilepicture= profilepicture_0001a03.pp
+charactername= Random
+dialogue= Ya rien ><
+
+

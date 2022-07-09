@@ -1,0 +1,42 @@
+#ifndef DEF_PERSO
+#define DEF_PERSO
+
+#include <string>
+
+class Perso
+{
+	protected:
+		//Attributs
+		const std::string name;
+		const std::string attack_name;
+		const int total_life_point;
+		const int attack_point;
+		int actual_life_point;
+		
+	public:
+		//Constructeurs
+		void Perso::Perso(const std::string& name, const std::string& attack_name, const int& life_point, const int attack_point) : 
+		:	name(name),
+			attack_name(attack_name),
+			total_life_point(life_point),
+			actual_life_point(life_point),
+			attack_point(attack_point)
+		{}
+			
+		//Fonctions membres
+		const int Perso::getTotalLifePoint()
+		{
+			return total_life_point;
+		}
+		
+		int Perso::getActualLifePoint()
+		{
+			return actual_life_point;
+		}
+		
+		int Perso::getActualLifePoint
+		void attack(int& life_point_opponent, const std::string& opponent_name);
+};
+
+#endif /*PERSO*/
+

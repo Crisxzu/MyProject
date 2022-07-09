@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <gtk/gtk.h>
+#include "mainWindowControler.h"
+#include "mainWindowModel.h"
+#include "mainWindowView.h"
+
+void mainWindow()
+{
+	GtkWidget *main_window=NULL, *main_box=NULL;
+	
+	intMainWindow(mainWindow, main_box);
+	intMainWindowTitle(main_window_title);
+	setMainWindowTitle(main_window, main_menu_title);
+	
+	showMainWindow(main_window);
+	
+	g_free(main_window_title), main_window_title=NULL;
+}
+
+void initializeStructGlobal()
+{
+	intStructGlobal();
+}

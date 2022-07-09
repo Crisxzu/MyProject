@@ -1,0 +1,14 @@
+#ifndef DEF_MENU
+#define DEF_MENU
+
+struct Settings
+{
+  float text_speed;
+};
+
+void displayMenu();
+void waitchoice(char *buffer, int *choice);
+void displaySettings();
+void modifySettings();
+
+#endif

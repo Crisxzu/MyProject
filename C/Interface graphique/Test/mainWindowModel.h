@@ -1,0 +1,6 @@
+#ifndef DEF_MAINWINDOWMODEL
+#define DEF_MAINWINDOWMODEL
+
+
+#endif
+

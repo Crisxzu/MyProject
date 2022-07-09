@@ -1,0 +1,9 @@
+choice= 2
+choice(a)= Gauche$ (goto) 0001a01
+choice(b)= Droite$ (goto) 0002
+background= background_0000.bac
+profilepicture= profilepicture_0000.pp
+charactername= Cirno
+dialogue= Par quel voie devrai-je passer ?
+
+

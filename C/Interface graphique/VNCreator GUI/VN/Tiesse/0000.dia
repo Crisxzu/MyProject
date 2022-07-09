@@ -1,0 +1,8 @@
+choice= 0 (goto) 0001
+background= Insérer le nom d'un fichier bac
+profilepicture= Insérer le nom d'un fichier pp
+charactername= Insérer le nom du personnage
+dialogue= Ecrire le dialogue ici
+
+Format par défaut, veuillez modifier en fonction de vos besoins.(ce texte est à effacer)
+P.S = Le texte du dialogue ne doit pas avoir plus de 415 caractères

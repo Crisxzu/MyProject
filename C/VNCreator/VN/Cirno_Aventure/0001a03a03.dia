@@ -1,0 +1,6 @@
+choice= 0 (if 1 Pomme chelou$ (goto) 0010 ) (goto) 0001a04
+background= background_0001a03a01.bac
+profilepicture= profilepicture_0001a03a01.pp
+charactername= Cirno
+dialogue= C'est vraiment bon !
+

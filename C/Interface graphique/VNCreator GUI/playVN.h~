@@ -1,0 +1,9 @@
+#ifndef DEF_PLAYVN
+#define DEF_PLAYVN
+
+#include "struct.h"
+void playVN(Settings *s);
+
+#endif
+
+

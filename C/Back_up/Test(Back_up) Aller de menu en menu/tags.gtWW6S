@@ -1,0 +1,21 @@
+DEF_STRUCT	struct.h	2;"	d
+main_menu_box	struct.h	/^	GtkBox *main_menu_box;$/;"	m	struct:__anon1
+settings_menu_box	struct.h	/^	GtkBox *settings_menu_box;$/;"	m	struct:__anon1
+run_menu_box	struct.h	/^	GtkBox *run_menu_box;$/;"	m	struct:__anon1
+struct_global	struct.h	/^}struct_global;$/;"	t	typeref:struct:__anon1
+__struct_global	struct.h	/^extern struct_global __struct_global;$/;"	x
+DEF_TEST	test.h	2;"	d
+CC	makefile	/^CC=gcc `pkg-config --cflags gtk+-3.0` $/;"	m
+CFLAGS	makefile	/^CFLAGS=-Wall `pkg-config --libs gtk+-3.0`$/;"	m
+OBJ	makefile	/^OBJ = test.o callback.o$/;"	m
+DEF_CALLBACK	callback.h	2;"	d
+cb_quit	callback.h	/^void cb_quit(GtkWidget *p_widget, gpointer user_data);$/;"	p
+cb_run	callback.h	/^void cb_run(GtkWidget *p_widget, gpointer user_data);$/;"	p
+cb_settings	callback.h	/^void cb_settings(GtkWidget *p_widget, gpointer user_data);$/;"	p
+cb_return	callback.h	/^void cb_return(GtkWidget *p_widget, gpointer user_data);$/;"	p
+cb_quit	callback.c	/^void cb_quit(GtkWidget *p_widget, gpointer user_data)$/;"	f
+cb_run	callback.c	/^void cb_run(GtkWidget *p_widget, gpointer user_data)$/;"	f
+cb_settings	callback.c	/^void cb_settings(GtkWidget *p_widget, gpointer user_data)$/;"	f
+cb_return	callback.c	/^void cb_return(GtkWidget *p_widget, gpointer user_data)$/;"	f
+__struct_global	test.c	/^struct_global __struct_global={NULL, NULL, NULL};$/;"	v
+main	test.c	/^int main (int argc, char** argv)$/;"	f

@@ -1,0 +1,8 @@
+choice= 2
+choice(a)= Banane$ (goto) 0001a03a03
+choice(b)= Pomme chelou$ (goto) 0001a03a03
+background= background_0001a03a01.bac
+profilepicture= profilepicture_0001a03a01.pp
+charactername= Cirno
+dialogue= Qu'est-ce que je devrai choisir ?
+

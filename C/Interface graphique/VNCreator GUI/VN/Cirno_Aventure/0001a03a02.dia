@@ -1,0 +1,8 @@
+choice= 2
+choice(a)= Banane$ (goto) 0001a03a03
+choice(b)= Pomme chelou$ (goto) 0001a03a03
+background= celluloid-shot0168.jpg
+profilepicture= 1d436ac691aa6ac266bffe49157b1f67.jpg
+charactername= Cirno
+dialogue= Qu'est-ce que je devrai choisir ?
+

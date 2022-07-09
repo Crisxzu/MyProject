@@ -1,0 +1,9 @@
+void waitchoice(char** ChampMenu, int *highlight_index, const int text_color); //Interaction de l'utilisateur avec ce menu afin de choisir ce qu'il veut
+
+Imprecis, on ne sait pas ce qu'est "l'interaction", ni par quel moyen l'utilisateur va pouvoir faire choix. Une option de la fonction n'est pas explicitée non plus.
+Corrigé "Permet à l'utilisateur de se déplacer dans le menu pour choisir une option parmi celle des options du menu via le pavé directionnel. L'option choisi est celle associé à highligh_index qui est modifié au cours de la fonction"
+
+
+Prochaine étape
+Créer quelque chose qui permet d'explorer le dossier VN où les différents sous-dossiers répresenteront les différents VN.
+Une fois qu'on a choisi notre N

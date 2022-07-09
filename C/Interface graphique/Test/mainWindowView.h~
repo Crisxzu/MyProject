@@ -1,0 +1,13 @@
+#ifndef DEF_MAINWINDOWVIEW
+#define DEF_MAINWINDOWVIEW
+
+void intMainWindow(GtkWidget *main_window, GtkWidget *main_box);
+
+void exitProgram(GtkWidget *p_widget, gpointer user_data);
+
+void setMainWindowTitle(GtkWidget *main_window, gchar *main_window_title);
+
+void showMainWindow(GtkWidget *main_window);
+
+#endif
+

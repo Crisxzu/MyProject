@@ -1,0 +1,14 @@
+CC=gcc `pkg-config --cflags --libs gtk+-3.0` 
+CFLAGS= `pkg-config --libs gtk+-3.0` -Wall
+OBJ = test.o callback.o
+
+%.o: %.c
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+test: $(OBJ)
+	$(CC) -o $@ $^ $(CFLAGS)
+
+.PHONY: clean
+
+clean:
+	rm -f *.o test

@@ -1,0 +1,7 @@
+#ifndef DEF_MAINMENUMODEL
+#define DEF_MAINMENUMODEL
+
+void intMainMenuLabel(gchar *main_menu_label_str);
+
+#endif
+

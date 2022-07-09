@@ -1,0 +1,6 @@
+choice= 0 (if 1 Pomme chelou$ (goto) 0010 ) (goto) 0001a04
+background= celluloid-shot0168.jpg
+profilepicture= 1d436ac691aa6ac266bffe49157b1f67.jpg
+charactername= Cirno
+dialogue= C'est vraiment bon !
+

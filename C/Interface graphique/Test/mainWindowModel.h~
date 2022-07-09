@@ -1,0 +1,7 @@
+#ifndef DEF_MAINWINDOWMODEL
+#define DEF_MAINWINDOWMODEL
+
+void intMainWindowTitle(gchar *main_menu_title);
+
+#endif
+

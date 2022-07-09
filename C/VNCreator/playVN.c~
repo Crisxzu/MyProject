@@ -1,0 +1,9 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "playVN.h"
+
+void playVN(Settings *s)
+{
+  printf("Je joue au VN.\n");
+}
+

@@ -1,0 +1,3 @@
+#!/bin/sh
+cd "/home/chris/Project/Interface graphique"
+./test

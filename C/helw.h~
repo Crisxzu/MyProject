@@ -1,0 +1,7 @@
+#ifndef DEF_HELW
+#define DEF_HELW
+
+static int addition(int *number1, int *number2);
+
+#endif
+

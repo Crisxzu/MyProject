@@ -1,0 +1,7 @@
+choice= 0 (goto) 0006
+background= Insérer le nom d'un fichier image
+profilepicture= Insérer le nom d'un fichier image
+charactername= Insérer le nom du personnage
+dialogue= Ecrire le dialogue ici
+
+Format par défaut, veuillez modifier en fonction de vos besoins.(ce texte est à effacer), nombre de caractères max 415
