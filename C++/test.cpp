@@ -7,23 +7,10 @@ using	namespace std;
 
 int main ()
 {
-	int k=0;
+	A *a=new A;
 	
-	k=giveValue(k);
+	M *m=a;
 	
-	
-	cout << k << endl;
+	delete m;
 	return 0;
-}
-
-int giveValue(int& k)
-{
-	if (k==0)
-	{
-		return 0;
-	}
-	else
-	{
-		return 1;
-	}
 }

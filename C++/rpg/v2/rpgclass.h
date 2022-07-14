@@ -168,6 +168,7 @@ class Combat
 		unsigned int turn;
 		const unsigned int nb_max_perso_per_group;
 		unsigned int i_perso;
+		unsigned int i_frontliner;
 		Perso **group_winner;
 		Perso **groupe1;
 		Perso **groupe2;
@@ -189,6 +190,12 @@ class Combat
 		
 			/*Permet de lancer le prochain round dans lequel un perso d'un groupe va effectuer une action*/
 		void nextRound();
+		
+			/*Permet d'obtenir l'index du personnage qui est en avant*/
+		int getFrontLiner(Perso **group);
+		
+			/*Permet de regenerer les pm de tous les persos de chaque groupe*/
+		void allGroupPmRegeneration();
 		
 	public:	
 		//Fonctions membres	
@@ -217,7 +224,6 @@ class Tournoi
 		const unsigned int nb_fight_for_final;
 		Perso ** teams[NB_MAX_TEAM];
 		Combat combat;
-		int i_team[NB_MAX_TEAM];
 		
 	public:
 		//Constructeurs

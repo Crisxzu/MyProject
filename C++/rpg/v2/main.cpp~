@@ -5,7 +5,7 @@ using namespace std;
 
 int main ()
 {
-	Perso *team1[NB_MAX_PERSO_PER_GROUP], *team2[NB_MAX_PERSO_PER_GROUP], *team3[NB_MAX_PERSO_PER_GROUP], *team4[NB_MAX_PERSO_PER_GROUP], *team5[NB_MAX_PERSO_PER_GROUP], *team6[NB_MAX_PERSO_PER_GROUP], *team7[NB_MAX_PERSO_PER_GROUP], *team8[NB_MAX_PERSO_PER_GROUP];
+	/*Perso *team1[NB_MAX_PERSO_PER_GROUP], *team2[NB_MAX_PERSO_PER_GROUP], *team3[NB_MAX_PERSO_PER_GROUP], *team4[NB_MAX_PERSO_PER_GROUP], *team5[NB_MAX_PERSO_PER_GROUP], *team6[NB_MAX_PERSO_PER_GROUP], *team7[NB_MAX_PERSO_PER_GROUP], *team8[NB_MAX_PERSO_PER_GROUP];
 	
 	team1[0]=insertChevalier();
 	team1[1]=insertChevalier();
@@ -61,5 +61,19 @@ int main ()
 	
 	deleteTeam(team1, NB_MAX_PERSO_PER_GROUP);
 	deleteTeam(team2, NB_MAX_PERSO_PER_GROUP);
+	deleteTeam(team3, NB_MAX_PERSO_PER_GROUP);
+	deleteTeam(team4, NB_MAX_PERSO_PER_GROUP);
+	deleteTeam(team5, NB_MAX_PERSO_PER_GROUP);
+	deleteTeam(team6, NB_MAX_PERSO_PER_GROUP);
+	deleteTeam(team7, NB_MAX_PERSO_PER_GROUP);
+	deleteTeam(team8, NB_MAX_PERSO_PER_GROUP);*/
+	
+	Perso A("Je", "Va", 400, 100);
+	Perso B("Tu","Vais", 400, 150); 
+	Perso C("Il","Allons", 400, 200);
+	
+	C=A+B;
+	
+	cout << C.getActualLifePoint() << endl;
 	return 0;
 }

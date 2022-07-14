@@ -67,5 +67,6 @@ int main ()
 	deleteTeam(team6, NB_MAX_PERSO_PER_GROUP);
 	deleteTeam(team7, NB_MAX_PERSO_PER_GROUP);
 	deleteTeam(team8, NB_MAX_PERSO_PER_GROUP);
+	
 	return 0;
 }

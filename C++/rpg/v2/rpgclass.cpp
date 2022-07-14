@@ -14,7 +14,7 @@ Perso::Perso(const string& name, const string& attack_name, const int& life_poin
 	max_life_point(life_point),
 	actual_life_point(life_point),
 	melee_attack_point(melee_attack_point),
-	pm_gain_per_turn(4)
+	pm_gain_per_turn(2)
 {}
 
 	/*Permet d'obtenir le nombre maximal de points de vie*/
@@ -107,11 +107,11 @@ void Chevalier::takeDamage(const int& damage_point)
 
 	/*Permet de construire notre mage en initialisant ses attributs en tant que personnage et mage*/
 Mage::Mage(const string& name, const string& attack_name, const int& life_point, const int& magic_attack_point, const int& pm_point)
-:	Perso(name, attack_name, life_point, magic_attack_point/10),
+:	Perso(name, attack_name, life_point, magic_attack_point/4),
 	max_pm(pm_point),
 	actual_pm(pm_point),
 	magic_attack_point(magic_attack_point),
-	magic_attack_pm_cost(0.7*pm_point)		
+	magic_attack_pm_cost(0.35*pm_point)		
 {}
 
 	/*Permet de regenerer les pm de notre mage*/
@@ -483,15 +483,19 @@ void Combat::nextRound()
 		//Tour d'un perso du premier groupe d'effectuer une action
 		case 1:
 			
+			//Le perso désigné ne fait une action que s'il est encore vivant
 			if (groupe1[i_perso]->getActualLifePoint()>0)
 			{
 				round++;
-				cout << "Round" << round << endl;
-				cout << groupe1[i_perso]->getPersoName() << ":" << groupe1[i_perso]->getActualLifePoint() << "/" << groupe1[i_perso]->getMaxLifePoint() << "pv" << endl;
-				cout << "vs" << endl;
-				cout << groupe2[i_perso]->getPersoName() << ":" << groupe2[i_perso]->getActualLifePoint() << "/" << groupe2[i_perso]->getMaxLifePoint() << "pv" << endl;
+				i_frontliner=getFrontLiner(groupe2);
+				allGroupPmRegeneration();
 				
-				groupe1[i_perso]->action(groupe2, groupe1, i_perso, nb_max_perso_per_group);	
+				cout << "Round " << round << endl;
+				cout << "(Groupe 1) " << groupe1[i_perso]->getPersoName() << ": " << groupe1[i_perso]->getActualLifePoint() << "/" << groupe1[i_perso]->getMaxLifePoint() << " pv" << endl;
+				cout << "vs" << endl;
+				cout << "(Groupe 2) " << groupe2[i_frontliner]->getPersoName() << ": " << groupe2[i_frontliner]->getActualLifePoint() << "/" << groupe2[i_frontliner]->getMaxLifePoint() << " pv" << endl;
+				
+				groupe1[i_perso]->action(groupe2, groupe1, i_frontliner, nb_max_perso_per_group);	
 			}
 			
 			turn=2;
@@ -499,21 +503,53 @@ void Combat::nextRound()
 		
 		//Tour d'un perso du deuxième groupe d'effectuer une action
 		case 2:
+			
+			//Le perso désigné ne fait une action que s'il est encore vivant
 			if (groupe2[i_perso]->getActualLifePoint()>0)
 			{
 				round++;
-				cout << "Round" << round << endl;
-				cout << groupe1[i_perso]->getPersoName() << ":" << groupe1[i_perso]->getActualLifePoint() << "/" << groupe1[i_perso]->getMaxLifePoint() << "pv" << endl;
-				cout << "vs" << endl;
-				cout << groupe2[i_perso]->getPersoName() << ":" << groupe2[i_perso]->getActualLifePoint() << "/" << groupe2[i_perso]->getMaxLifePoint() << "pv" << endl;
+				i_frontliner=getFrontLiner(groupe1);
+				allGroupPmRegeneration();
 				
-				groupe2[i_perso]->action(groupe1, groupe2, i_perso, nb_max_perso_per_group);	
+				cout << "Round " << round << endl;
+				cout << "(Groupe 2) " << groupe2[i_perso]->getPersoName() << ": " << groupe2[i_perso]->getActualLifePoint() << "/" << groupe2[i_perso]->getMaxLifePoint() << " pv" << endl;
+				cout << "vs" << endl;
+				cout << "(Groupe 1) " << groupe1[i_frontliner]->getPersoName() << ": " << groupe1[i_frontliner]->getActualLifePoint() << "/" << groupe1[i_frontliner]->getMaxLifePoint() << " pv" << endl;
+				
+				groupe2[i_perso]->action(groupe1, groupe2, i_frontliner, nb_max_perso_per_group);	
 			}
 		
 			i_perso++;
 			turn=1;
 			break;
 	} 
+}
+
+	/*Permet d'obtenir l'index du personnage qui est en avant*/
+int Combat::getFrontLiner(Perso **group)
+{
+	unsigned int i_frontliner=0;
+	
+	//Permet d'obtenir l'index du premier perso vivant du groupe et le boucle est gardé jusqu'à trouver le premier jouer vivant ou que le nombre max de perso soit dépassé
+	for (;group[i_frontliner]->getActualLifePoint() == 0 && i_frontliner<nb_max_perso_per_group; i_frontliner += 1);
+	
+	return i_frontliner;
+}
+
+	/*Permet de regenerer les pm de tous les persos de chaque groupe*/
+void Combat::allGroupPmRegeneration()
+{
+	//Permet de régénerer les pm de chaque perso du groupe1 un à un jusqu'à l'avoir fait pour tous les perso
+	for (unsigned int i = 0; i < nb_max_perso_per_group; i += 1)
+	{
+		groupe1[i]->pmRegeneration();
+	}
+	
+	//Permet de régénerer les pm de chaque perso du groupe2 un à un jusqu'à l'avoir fait pour tous les perso
+	for (unsigned int i = 0; i < nb_max_perso_per_group; i += 1)
+	{
+		groupe2[i]->pmRegeneration();
+	}	
 }
 
 	/*Permet d'obtenir le groupe gagnant du combat*/
@@ -536,17 +572,6 @@ void Combat::fight()
 	//Permet de continuer à lancer un round tant que tous les persos d'un groupe ne sont pas morts
 	while (!isOver())
 	{
-		//Permet de régénerer les pm de chaque perso du groupe1 un à un jusqu'à l'avoir pour tous les perso
-		for (unsigned int i = 0; i < nb_max_perso_per_group; i += 1)
-		{
-			groupe1[i]->pmRegeneration();
-		}
-		
-		//Permet de régénerer les pm de chaque perso du groupe2 un à un jusqu'à l'avoir pour tous les perso
-		for (unsigned int i = 0; i < nb_max_perso_per_group; i += 1)
-		{
-			groupe2[i]->pmRegeneration();
-		}
 		nextRound();
 	}
 }
@@ -571,7 +596,7 @@ Chevalier * insertChevalier()
 	/*Permet d'insérer un mage dans un groupe*/
 Mage * insertMage()
 {
-	Mage *mage=new Mage("Merlin", "Feu tout puissant", 400, 200, 100);
+	Mage *mage=new Mage("Merlin", "Feu tout puissant", 400, 80, 100);
 	
 	return mage;
 }
