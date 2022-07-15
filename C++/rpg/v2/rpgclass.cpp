@@ -49,7 +49,7 @@ void Perso::takeHeal(const int& heal_magic_point)
 	//Si après soin, ses points de vie sont supérieurs au maximum fixé alors leur valeur sera égale à max_life_point
 	if(actual_life_point>max_life_point)
 	{
-		actual_life_point=heal_magic_point;
+		actual_life_point=max_life_point;
 	}
 	
 	cout << name << ": " << "gagne " << heal_magic_point << "points de vie !" << endl;

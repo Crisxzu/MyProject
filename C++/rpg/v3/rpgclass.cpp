@@ -49,7 +49,7 @@ void Perso::takeHeal(const int& heal_magic_point)
 	//Si après soin, ses points de vie sont supérieurs au maximum fixé alors leur valeur sera égale à max_life_point
 	if(actual_life_point>max_life_point)
 	{
-		actual_life_point=heal_magic_point;
+		actual_life_point=max_life_point;
 	}
 	
 	cout << name << ": " << "gagne " << heal_magic_point << "points de vie !" << endl;
@@ -723,16 +723,16 @@ void ChevalierVoleur::takeDamage(const int& damage_point)
 		if(random_nb>(coef_dodge*0.5)*10)
 		{
 			//Si les points de dommages infligés sont supérieurs aux points de défense du chevalier voleur alors celui-ci subit des dommages
-			if(defense_point*0.5<damage_point)
+			if(defense_point<damage_point)
 			{
-				actual_life_point = actual_life_point - (damage_point - (0.5*defense_point));
+				actual_life_point = actual_life_point - (damage_point - (defense_point));
 				
 				//Si les points restants sont inférieurs à 0, alors ceux-ci seront remis à 0
 				if(actual_life_point<0)
 				{
 					actual_life_point=0;
 				}
-				cout << name << " a perdu " << (damage_point - (0.5*defense_point)) << " points de vie !" << endl;
+				cout << name << " a perdu " << (damage_point - (defense_point)) << " points de vie !" << endl;
 			}
 			
 			//Sinon, alors celui-ci ne subit aucun dommage
@@ -754,8 +754,194 @@ void ChevalierVoleur::takeDamage(const int& damage_point)
 VoleurPretre::VoleurPretre(const std::string& name, const std::string& attack_name, const int& life_point, const int& melee_attack_point, const int& heal_magic_point, const int& pm_point)
 :	Perso(name, attack_name, life_point, melee_attack_point),
 	Voleur(name, attack_name, life_point, melee_attack_point),
-	Pretre(name, attack_name, life_point, heal_magic_point, pm_point)
+	Pretre(name, attack_name, life_point, heal_magic_point, pm_point),
+	f_can_use_heal_ability(true),
+	max_ability_use_per_combat(1),
+	actual_ability_use(0)
 {}
+
+	/*Permet de reinitialiser la capacité à utiliser des abilités après chaque combat*/
+void VoleurPretre::resetPerCombatAbility()
+{
+	actual_ability_use=0;
+	f_can_use_heal_ability=true;
+}
+
+	/*Permet à notre voleur pretre d'effectuer une action.
+	opponent_group = groupe adverse
+	i_perso = int, index du perso ciblé par l'action
+	nb_max_perso_per_group= int, nombre max de persos par groupe*/
+void VoleurPretre::action(Perso **opponent_group, Perso **ally_group, const int& i_player, const unsigned int& nb_max_perso_per_group)
+{
+	int val_min=999;
+	int i_most_weak_perso=999;
+	
+	//Si le voleur pretre a été touché et qu'il peut utiliser son abilité à se soigner, il se soigne
+	if (actual_life_point<max_life_point and f_can_use_heal_ability==true)
+	{
+		cout << name << ": " << "Soin du voleur " << "!" << endl;
+		
+		takeHeal(heal_magic_point);
+		actual_ability_use++;
+		
+		//Si le perso a dépassé le nombre max d'usage de son abilité alors il ne peut plus l'utiliser
+		if (actual_ability_use>=max_ability_use_per_combat)
+		{
+			f_can_use_heal_ability=false;
+		}
+	}
+	
+	//Sinon il attaque
+	else
+	{
+		//Permet d'examiner les pv des persos du groupe adverse un à un jusqu'à les avoir tous examiner et de noter l'index de celui dont les pv sont les plus faibles
+		for (unsigned int i_perso = 0; i_perso < nb_max_perso_per_group; i_perso += 1)
+		{
+			//Si les pv du perso sont inférieurs à la valeur minimale enregistré actuellement et supérieures à 0, on note son index et la valeur de ses pv en tant que nouvelle valeur minimale
+			if (opponent_group[i_perso]->getActualLifePoint()<val_min and opponent_group[i_perso]->getActualLifePoint()>0)
+			{
+				val_min=opponent_group[i_perso]->getActualLifePoint();
+				i_most_weak_perso=i_perso;
+			}
+		} 
+
+		cout << name << ": " << attack_name << " !" << endl;
+		cout << name << ": " << attack_name << " !" << endl;
+		
+		opponent_group[i_most_weak_perso]->takeDamage(melee_attack_point*2);	
+	}
+}
+
+	/*Permet à notre voleur pretre de subir des dégats*/
+void VoleurPretre::takeDamage(const int& damage_point)
+{
+	int max=100, min=0, random_nb=0;
+	srand(time(NULL));
+	
+	//Le perso ne prend des dégats que si celui-ci est encore vivant
+	if (getActualLifePoint()>0)
+	{
+		random_nb=rand()%(max+1-min)+min;
+		
+		//Si le nombre aléatoire généré est supérieure au taux d'esquive, alors le voleur pretre prend des dommages
+		if(random_nb>coef_dodge*10)
+		{
+			actual_life_point -= damage_point;
+			
+			//Si les points restants sont inférieurs à 0, alors ceux-ci seront remis à 0
+			if(actual_life_point<0)
+			{
+				actual_life_point=0;
+			}
+			cout << name << " a perdu " << damage_point << " points de vie !" << endl;
+		}
+		
+		//Sinon, le voleur pretre ne prend aucun dommage
+		else
+		{
+			cout << name << " a esquivé l'attaque !" << endl;
+		}
+	}
+}
+
+	/*Permet de construire notre chevalier pretre en initialisant en tant que chevalier et pretre*/
+ChevalierPretre::ChevalierPretre(const std::string& name, const std::string& attack_name, const int& life_point, const int& melee_attack_point, const int& heal_magic_point, const int& pm_point, const int& defense_point)
+:	Perso(name, attack_name, life_point, melee_attack_point),
+	Chevalier(name, attack_name, life_point, melee_attack_point, defense_point),
+	Pretre(name, attack_name, life_point, heal_magic_point*2, pm_point),
+	f_can_use_heal_ability(true),
+	max_ability_use_per_combat(1),
+	actual_ability_use(0)
+{}
+
+	/*Permet de savoir si un perso allié est en danger en retournant true si oui ou false si non
+	ally_group = groupe allié
+	nb_max_perso_per_group = nombre max de persos par groupe
+	i_player_in_danger = index du perso en danger*/
+bool ChevalierPretre::isAllyPlayerInDanger(Perso **ally_group, const unsigned int& nb_max_perso_per_group, int& i_player_in_danger)
+{
+	//Permet de vérifier les pv de chaque perso allié un à un jusqu'à l'avoir fait pour tous les perso
+	for (unsigned int i = 0; i < nb_max_perso_per_group; i += 1)
+	{
+		//Si les pv d'un perso allié sont inférieurs ou égale à 50% de sa valeur max alors on note l'index de celui-ci
+		if (ally_group[i]->getActualLifePoint()<=(0.5*ally_group[i]->getMaxLifePoint()))
+		{
+			i_player_in_danger=i;
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+	/*Permet de reinitialiser la capacité à utiliser des abilités après chaque combat*/
+void ChevalierPretre::resetPerCombatAbility()
+{
+	actual_ability_use=0;
+	f_can_use_heal_ability=true;	
+}
+
+	/*Permet à notre voleur pretre d'effectuer une action.
+	opponent_group = groupe adverse
+	i_perso = int, index du perso ciblé par l'action
+	nb_max_perso_per_group= int, nombre max de persos par groupe*/
+void ChevalierPretre::action(Perso **opponent_group, Perso **ally_group, const int& i_player, const unsigned int& nb_max_perso_per_group)
+{
+	int i_player_in_danger=0;
+	
+	//Si un des persos alliés est en danger et que le chevalier prêtre peut utiliser son abilité à soigner, il se soigne
+	if (isAllyPlayerInDanger(ally_group, nb_max_perso_per_group, i_player_in_danger)==true and f_can_use_heal_ability==true)
+	{
+		cout << name << ": " << "Soin du Chevalier Pretre " << "!" << endl;
+		
+		ally_group[i_player_in_danger]->takeHeal(heal_magic_point);
+		actual_ability_use++;
+		
+		//Si le perso a dépassé le nombre max d'usage de son abilité alors il ne peut plus l'utiliser
+		if (actual_ability_use>=max_ability_use_per_combat)
+		{
+			f_can_use_heal_ability=false;
+		}
+	}
+	
+	//Sinon, alors il attaque
+	else
+	{
+		//Le perso n'attaque son adversaire que si celui-ci est encore vivant
+		if (opponent_group[i_player]->getActualLifePoint()>0)
+		{
+			cout << name << ": " << attack_name << "!" << endl;
+			opponent_group[i_player]->takeDamage(melee_attack_point);	
+		}
+	}
+}
+
+	/*Permet à notre chevalier pretre de subir des dégats*/
+void ChevalierPretre::takeDamage(const int& damage_point)
+{
+	//Le perso ne prend des dégats que si celui-ci est encore vivant
+	if (getActualLifePoint()>0)
+	{
+		//Si les points de dommages infligés sont supérieurs aux points de défense du chevalier pretre alors celui-ci subit des dommages
+		if(defense_point<damage_point)
+		{
+			actual_life_point = actual_life_point - (damage_point - defense_point);
+			
+			//Si les points restants sont inférieurs à 0, alors ceux-ci seront remis à 0
+			if(actual_life_point<0)
+			{
+				actual_life_point=0;
+			}
+			cout << name << " a perdu " << (damage_point - defense_point) << " points de vie !" << endl;
+		}
+		
+		//Sinon, alors celui-ci ne subit aucun dommage
+		else
+		{
+			cout << name << " n'a subi aucun point de dommages !" << endl;
+		}	
+	}
+}
 
 	/*Permet de construire un combat en initialisant ses attributs*/
 Combat::Combat()
@@ -945,6 +1131,22 @@ void Combat::allGroupPmRegeneration()
 	}	
 }
 
+	/*Permet de reinitialiser la capacité à utiliser des abilités de tous les persos de chaque groupe*/
+void Combat::allGroupResetPerCombatAbility()
+{
+	//Permet de réintialiser la capacité à utiliser des abilités de chaque perso du groupe1 un à un jusqu'à l'avoir fait pour tous les perso
+	for (unsigned int i = 0; i < nb_max_perso_per_group; i += 1)
+	{
+		groupe1[i]->resetPerCombatAbility();
+	}
+	
+	//Permet de réintialiser la capacité à utiliser des abilités de chaque perso du groupe2 un à un jusqu'à l'avoir fait pour tous les perso
+	for (unsigned int i = 0; i < nb_max_perso_per_group; i += 1)
+	{
+		groupe2[i]->resetPerCombatAbility();
+	}
+}
+
 	/*Permet d'obtenir le groupe gagnant du combat*/
 Perso ** Combat::getGroupWinnner() const
 {
@@ -962,6 +1164,8 @@ void Combat::fight()
 {
 	round=0, i_perso=0, turn=1;
 	
+	allGroupResetPerCombatAbility();
+	
 	//Permet de continuer à lancer un round tant que tous les persos d'un groupe ne sont pas morts
 	while (!isOver())
 	{
@@ -978,68 +1182,84 @@ void Combat::updateGroup(Perso **groupe1, Perso **groupe2)
 	this->groupe2=groupe2;
 }
 
-	/*Permet d'insérer un chevalier dans un groupe*/
-Chevalier * insertChevalier()
+	/*Permet de créer un chevalier et de le renvoyer*/
+Chevalier * createChevalier()
 {
 	Chevalier *chevalier=new Chevalier("Lancelot", "Epee Sainte", 400, 100, 40);
 	
 	return chevalier;
 }
 
-	/*Permet d'insérer un mage dans un groupe*/
-Mage * insertMage()
+	/*Permet de créer un mage et de le renvoyer*/
+Mage * createMage()
 {
 	Mage *mage=new Mage("Merlin", "Feu tout puissant", 400, 80, 100);
 	
 	return mage;
 }
 
-	/*Permet d'insérer un voleur dans un groupe*/
-Voleur *insertVoleur()
+	/*Permet de créer un voleur et de le renvoyer*/
+Voleur *createVoleur()
 {
 	Voleur *voleur=new Voleur("Pack", "Coup rapide", 400, 40);
 	
 	return voleur;
 }
 
-	/*Permet d'insérer un prêtre dans un groupe*/
-Pretre *insertPretre()
+	/*Permet de créer un prêtre et de le renvoyer*/
+Pretre *createPretre()
 {
 	Pretre *pretre=new Pretre("Trust", "Soin", 400, 100, 100);
 	
 	return pretre;
 }
 
-	/*Permet d'insérer un chevalier mage dans un groupe*/
-ChevalierMage *insertChevalierMage()
+	/*Permet de créer un chevalier mage et de le renvoyer*/
+ChevalierMage *createChevalierMage()
 {
 	ChevalierMage *chevaliermage=new ChevalierMage("Lancelin", "Feu tout puissant du chevalier", 400, 80, 100, 40);
 	
 	return chevaliermage;
 }
 
-	/*Permet d'insérer un mage voleur dans un groupe*/
-MageVoleur *insertMageVoleur()
+	/*Permet de créer un mage voleur et de le renvoyer*/
+MageVoleur *createMageVoleur()
 {
 	MageVoleur *magevoleur=new MageVoleur("Merlack", "Feu tout puissant du voleur", 400, 40, 80, 100);
 	
 	return magevoleur;
 }
 
-	/*Permet d'insérer un mage pretre dans un groupe*/
-MagePretre *insertMagePretre()
+	/*Permet de créer un mage pretre et de le renvoyer*/
+MagePretre *createMagePretre()
 {
 	MagePretre *magepretre=new MagePretre("Merlust", "Feu tout puissant du pretre", 400, 80, 100);
 	
 	return magepretre;
 }
 
-	/*Permet d'insérer un chevalier voleur dans un groupe*/
-ChevalierVoleur *insertChevalierVoleur()
+	/*Permet de créer un chevalier voleur et de le renvoyer*/
+ChevalierVoleur *createChevalierVoleur()
 {
 	ChevalierVoleur *chevaliervoleur=new ChevalierVoleur("Lancelack", "Coup d'épée", 400, 100, 40);
 	
 	return chevaliervoleur;
+}
+
+	/*Permet de créer un voleur pretre et de le renvoyer*/
+VoleurPretre *createVoleurPretre()
+{
+	VoleurPretre *voleurpretre=new VoleurPretre("Pacrust", "Coup rapide", 400, 40, 100, 100);
+	
+	return voleurpretre;
+}
+
+	/*Permet de créer un chevalier pretre et de le renvoyer*/
+ChevalierPretre *createChevalierPretre()
+{
+	ChevalierPretre *chevalierpretre= new ChevalierPretre("Lancelust", "Epee sainte", 400, 100, 100, 100, 40);
+	
+	return chevalierpretre;
 }
 
 	/*Permet de supprimer une équipe de persos.

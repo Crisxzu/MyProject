@@ -56,6 +56,9 @@ class Perso
 		
 		virtual void pmRegeneration()
 		{}
+		
+		virtual void resetPerCombatAbility()
+		{}
 };
 
 class Chevalier : virtual public Perso
@@ -280,7 +283,9 @@ class VoleurPretre : virtual public Voleur, virtual public Pretre
 {
 	protected:
 		//Attributs
-		/* data */
+		bool f_can_use_heal_ability;
+		const int max_ability_use_per_combat;
+		int actual_ability_use;
 	
 	public:
 		//Constructeurs
@@ -290,6 +295,57 @@ class VoleurPretre : virtual public Voleur, virtual public Pretre
 		
 		//Fonctions membres	
 		
+			/*Permet de reinitialiser la capacité à utiliser des abilités après chaque combat*/
+		void resetPerCombatAbility();
+		
+			/*Permet à notre voleur pretre d'effectuer une action.
+			opponent_group = groupe adverse
+			i_perso = int, index du perso ciblé par l'action
+			nb_max_perso_per_group= int, nombre max de persos par groupe*/
+		void action(Perso **opponent_group, Perso **ally_group, const int& i_player, const unsigned int& nb_max_perso_per_group);
+		
+			/*Permet à notre voleur pretre de subir des dégats*/
+		void takeDamage(const int& damage_point);		
+};
+
+class ChevalierPretre : virtual public Chevalier, virtual public Pretre
+{
+	protected:
+		//Attributs
+		bool f_can_use_heal_ability;
+		const int max_ability_use_per_combat;
+		int actual_ability_use;
+	
+	public:
+		//Constructeurs
+		
+			/*Permet de construire notre chevalier pretre en initialisant en tant que chevalier et pretre*/
+		ChevalierPretre(const std::string& name, const std::string& attack_name, const int& life_point, const int& melee_attack_point, const int& heal_magic_point, const int& pm_point, const int& defense_point);
+	
+	private:
+		//Sous-méthodes
+		
+			/*Permet de savoir si un perso allié est en danger en retournant true si oui ou false si non
+			ally_group = groupe allié
+			nb_max_perso_per_group = nombre max de persos par groupe
+			i_player_in_danger = index du perso en danger*/
+		bool isAllyPlayerInDanger(Perso **ally_group, const unsigned int& nb_max_perso_per_group, int& i_player_in_danger);
+	
+	public:
+	
+		//Fonctions membres	
+
+			/*Permet de reinitialiser la capacité à utiliser des abilités après chaque combat*/
+		void resetPerCombatAbility();
+		
+			/*Permet à notre chevalier pretre d'effectuer une action.
+			opponent_group = groupe adverse
+			i_perso = int, index du perso ciblé par l'action
+			nb_max_perso_per_group= int, nombre max de persos par groupe*/
+		void action(Perso **opponent_group, Perso **ally_group, const int& i_player, const unsigned int& nb_max_perso_per_group);
+		
+			/*Permet à notre chevalier pretre de subir des dégats*/
+		void takeDamage(const int& damage_point);		
 };
 
 class Combat
@@ -328,6 +384,9 @@ class Combat
 		
 			/*Permet de regenerer les pm de tous les persos de chaque groupe*/
 		void allGroupPmRegeneration();
+		
+			/*Permet de reinitialiser la capacité à utiliser des abilités de tous les persos de chaque groupe*/
+		void allGroupResetPerCombatAbility();
 		
 	public:	
 		//Fonctions membres	
@@ -384,29 +443,35 @@ class Tournoi
 
 //////////PUBLIC//////////
 
-	/*Permet d'insérer un chevalier dans un groupe*/
-Chevalier * insertChevalier();
+	/*Permet de créer un chevalier et de le renvoyer*/
+Chevalier * createChevalier();
 
-	/*Permet d'insérer un mage dans un groupe*/
-Mage * insertMage();
+	/*Permet de créer un mage et de le renvoyer*/
+Mage * createMage();
 
-	/*Permet d'insérer un voleur dans un groupe*/
-Voleur *insertVoleur();
+	/*Permet de créer un voleur et de le renvoyer*/
+Voleur *createVoleur();
 
-	/*Permet d'insérer un prêtre dans un groupe*/
-Pretre *insertPretre();
+	/*Permet de créer un prêtre et de le renvoyer*/
+Pretre *createPretre();
 
-	/*Permet d'insérer un chevalier mage dans un groupe*/
-ChevalierMage *insertChevalierMage();
+	/*Permet de créer un chevalier mage et de le renvoyer*/
+ChevalierMage *createChevalierMage();
 
-	/*Permet d'insérer un mage voleur dans un groupe*/
-MageVoleur *insertMageVoleur();
+	/*Permet de créer un mage voleur et de le renvoyer*/
+MageVoleur *createMageVoleur();
 
-	/*Permet d'insérer un mage pretre dans un groupe*/
-MagePretre *insertMagePretre();
+	/*Permet de créer un mage pretre et de le renvoyer*/
+MagePretre *createMagePretre();
 
-	/*Permet d'insérer un chevalier voleur dans un groupe*/
-ChevalierVoleur *insertChevalierVoleur();
+	/*Permet de créer un chevalier voleur et de le renvoyer*/
+ChevalierVoleur *createChevalierVoleur();
+
+	/*Permet de créer un voleur pretre et de le renvoyer*/
+VoleurPretre *createVoleurPretre();
+
+	/*Permet de créer un chevalier pretre et de le renvoyer*/
+ChevalierPretre *createChevalierPretre();
 
 	/*Permet de supprimer une équipe de persos.
 	team = équipe de perso à supprimer.
