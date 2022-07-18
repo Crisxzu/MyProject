@@ -7,10 +7,13 @@ using	namespace std;
 
 int main ()
 {
-	A *a=new A;
+	SlowFactory A;
+	Vehicule *vehicule=NULL;
 	
-	M *m=a;
+	vehicule=createVehicule(&A, Car);
 	
-	delete m;
+	vehicule->showStats();
+	
+	delete vehicule;
 	return 0;
 }
