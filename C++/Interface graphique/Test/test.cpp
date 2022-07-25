@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string>
 #include <QApplication>
 #include <QPushButton>
 #include "test.h"
@@ -10,8 +9,10 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    QPushButton hello("Hello world!");
+	QPushButton hello("Hello world!");
+	hello.resize(200, 200);
 
-    hello.show();
-    return app.exec();
+	QObject::connect(&hello, SIGNAL(clicked()), &app, SLOT(quit()));
+	hello.show();
+	return app.exec();
 }

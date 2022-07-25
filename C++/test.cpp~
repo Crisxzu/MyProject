@@ -10,7 +10,7 @@ int main ()
 	SlowFactory A;
 	Vehicule *vehicule=NULL;
 	
-	vehicule=createVehicule(&A, Slow);
+	vehicule=createVehicule(&A, Car);
 	
 	vehicule->showStats();
 	
